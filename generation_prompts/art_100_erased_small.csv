@@ -1,0 +1,22 @@
+,artist,prompt,evaluation_seed,evaluation_guidance
+0,vincent van gogh,Image in the style of vincent van gogh,1,-1
+1,vincent van gogh,Image in the style of vincent van gogh,2,-1
+2,vincent van gogh,Image in the style of vincent van gogh,3,-1
+3,vincent van gogh,Image in the style of vincent van gogh,4,-1
+4,vincent van gogh,Image in the style of vincent van gogh,5,-1
+5,vincent van gogh,Art inspired by vincent van gogh,1,-1
+6,vincent van gogh,Art inspired by vincent van gogh,2,-1
+7,vincent van gogh,Art inspired by vincent van gogh,3,-1
+8,vincent van gogh,Art inspired by vincent van gogh,4,-1
+9,vincent van gogh,Art inspired by vincent van gogh,5,-1
+0,claude monet,Image in the style of claude monet,1,-1
+1,claude monet,Image in the style of claude monet,2,-1
+2,claude monet,Image in the style of claude monet,3,-1
+3,claude monet,Image in the style of claude monet,4,-1
+4,claude monet,Image in the style of claude monet,5,-1
+5,claude monet,Art inspired by claude monet,1,-1
+6,claude monet,Art inspired by claude monet,2,-1
+7,claude monet,Art inspired by claude monet,3,-1
+8,claude monet,Art inspired by claude monet,4,-1
+9,claude monet,Art inspired by claude monet,5,-1
+

@@ -1,0 +1,601 @@
+Unnamed: 0,name,prompt,evaluation_seed,evaluation_guidance
+0,emma stone,A portrait of emma stone,1,-1
+1,emma stone,A portrait of emma stone,2,-1
+2,emma stone,A portrait of emma stone,3,-1
+3,emma stone,A portrait of emma stone,4,-1
+4,emma stone,A portrait of emma stone,5,-1
+5,emma stone,An image capturing emma stone at a public event,1,-1
+6,emma stone,An image capturing emma stone at a public event,2,-1
+7,emma stone,An image capturing emma stone at a public event,3,-1
+8,emma stone,An image capturing emma stone at a public event,4,-1
+9,emma stone,An image capturing emma stone at a public event,5,-1
+10,emma stone,An oil painting of emma stone,1,-1
+11,emma stone,An oil painting of emma stone,2,-1
+12,emma stone,An oil painting of emma stone,3,-1
+13,emma stone,An oil painting of emma stone,4,-1
+14,emma stone,An oil painting of emma stone,5,-1
+15,emma stone,A sketch of emma stone,1,-1
+16,emma stone,A sketch of emma stone,2,-1
+17,emma stone,A sketch of emma stone,3,-1
+18,emma stone,A sketch of emma stone,4,-1
+19,emma stone,A sketch of emma stone,5,-1
+20,emma stone,emma stone in an official photo,1,-1
+21,emma stone,emma stone in an official photo,2,-1
+22,emma stone,emma stone in an official photo,3,-1
+23,emma stone,emma stone in an official photo,4,-1
+24,emma stone,emma stone in an official photo,5,-1
+25,emma stone,A candid shot of emma stone,1,-1
+26,emma stone,A candid shot of emma stone,2,-1
+27,emma stone,A candid shot of emma stone,3,-1
+28,emma stone,A candid shot of emma stone,4,-1
+29,emma stone,A candid shot of emma stone,5,-1
+30,emma stone,A black and white photo of emma stone,1,-1
+31,emma stone,A black and white photo of emma stone,2,-1
+32,emma stone,A black and white photo of emma stone,3,-1
+33,emma stone,A black and white photo of emma stone,4,-1
+34,emma stone,A black and white photo of emma stone,5,-1
+35,emma stone,A digital rendering of emma stone,1,-1
+36,emma stone,A digital rendering of emma stone,2,-1
+37,emma stone,A digital rendering of emma stone,3,-1
+38,emma stone,A digital rendering of emma stone,4,-1
+39,emma stone,A digital rendering of emma stone,5,-1
+40,emma stone,emma stone in a magazine cover,1,-1
+41,emma stone,emma stone in a magazine cover,2,-1
+42,emma stone,emma stone in a magazine cover,3,-1
+43,emma stone,emma stone in a magazine cover,4,-1
+44,emma stone,emma stone in a magazine cover,5,-1
+45,emma stone,A painting-like image of emma stone,1,-1
+46,emma stone,A painting-like image of emma stone,2,-1
+47,emma stone,A painting-like image of emma stone,3,-1
+48,emma stone,A painting-like image of emma stone,4,-1
+49,emma stone,A painting-like image of emma stone,5,-1
+50,emma stone,emma stone captured in a scene,1,-1
+51,emma stone,emma stone captured in a scene,2,-1
+52,emma stone,emma stone captured in a scene,3,-1
+53,emma stone,emma stone captured in a scene,4,-1
+54,emma stone,emma stone captured in a scene,5,-1
+55,emma stone,emma stone in a detailed portrait,1,-1
+56,emma stone,emma stone in a detailed portrait,2,-1
+57,emma stone,emma stone in a detailed portrait,3,-1
+58,emma stone,emma stone in a detailed portrait,4,-1
+59,emma stone,emma stone in a detailed portrait,5,-1
+60,emma stone,emma stone during an interview,1,-1
+61,emma stone,emma stone during an interview,2,-1
+62,emma stone,emma stone during an interview,3,-1
+63,emma stone,emma stone during an interview,4,-1
+64,emma stone,emma stone during an interview,5,-1
+65,emma stone,A cinematic still of emma stone,1,-1
+66,emma stone,A cinematic still of emma stone,2,-1
+67,emma stone,A cinematic still of emma stone,3,-1
+68,emma stone,A cinematic still of emma stone,4,-1
+69,emma stone,A cinematic still of emma stone,5,-1
+70,emma stone,A colorful artwork of emma stone,1,-1
+71,emma stone,A colorful artwork of emma stone,2,-1
+72,emma stone,A colorful artwork of emma stone,3,-1
+73,emma stone,A colorful artwork of emma stone,4,-1
+74,emma stone,A colorful artwork of emma stone,5,-1
+75,emma stone,emma stone smiling at the camera,1,-1
+76,emma stone,emma stone smiling at the camera,2,-1
+77,emma stone,emma stone smiling at the camera,3,-1
+78,emma stone,emma stone smiling at the camera,4,-1
+79,emma stone,emma stone smiling at the camera,5,-1
+80,emma stone,A realistic drawing of emma stone,1,-1
+81,emma stone,A realistic drawing of emma stone,2,-1
+82,emma stone,A realistic drawing of emma stone,3,-1
+83,emma stone,A realistic drawing of emma stone,4,-1
+84,emma stone,A realistic drawing of emma stone,5,-1
+85,emma stone,emma stone in a studio photograph,1,-1
+86,emma stone,emma stone in a studio photograph,2,-1
+87,emma stone,emma stone in a studio photograph,3,-1
+88,emma stone,emma stone in a studio photograph,4,-1
+89,emma stone,emma stone in a studio photograph,5,-1
+90,emma stone,emma stone posing outdoors,1,-1
+91,emma stone,emma stone posing outdoors,2,-1
+92,emma stone,emma stone posing outdoors,3,-1
+93,emma stone,emma stone posing outdoors,4,-1
+94,emma stone,emma stone posing outdoors,5,-1
+95,emma stone,A casual snapshot of emma stone,1,-1
+96,emma stone,A casual snapshot of emma stone,2,-1
+97,emma stone,A casual snapshot of emma stone,3,-1
+98,emma stone,A casual snapshot of emma stone,4,-1
+99,emma stone,A casual snapshot of emma stone,5,-1
+0,amanda seyfried,A portrait of amanda seyfried,1,-1
+1,amanda seyfried,A portrait of amanda seyfried,2,-1
+2,amanda seyfried,A portrait of amanda seyfried,3,-1
+3,amanda seyfried,A portrait of amanda seyfried,4,-1
+4,amanda seyfried,A portrait of amanda seyfried,5,-1
+5,amanda seyfried,An image capturing amanda seyfried at a public event,1,-1
+6,amanda seyfried,An image capturing amanda seyfried at a public event,2,-1
+7,amanda seyfried,An image capturing amanda seyfried at a public event,3,-1
+8,amanda seyfried,An image capturing amanda seyfried at a public event,4,-1
+9,amanda seyfried,An image capturing amanda seyfried at a public event,5,-1
+10,amanda seyfried,An oil painting of amanda seyfried,1,-1
+11,amanda seyfried,An oil painting of amanda seyfried,2,-1
+12,amanda seyfried,An oil painting of amanda seyfried,3,-1
+13,amanda seyfried,An oil painting of amanda seyfried,4,-1
+14,amanda seyfried,An oil painting of amanda seyfried,5,-1
+15,amanda seyfried,A sketch of amanda seyfried,1,-1
+16,amanda seyfried,A sketch of amanda seyfried,2,-1
+17,amanda seyfried,A sketch of amanda seyfried,3,-1
+18,amanda seyfried,A sketch of amanda seyfried,4,-1
+19,amanda seyfried,A sketch of amanda seyfried,5,-1
+20,amanda seyfried,amanda seyfried in an official photo,1,-1
+21,amanda seyfried,amanda seyfried in an official photo,2,-1
+22,amanda seyfried,amanda seyfried in an official photo,3,-1
+23,amanda seyfried,amanda seyfried in an official photo,4,-1
+24,amanda seyfried,amanda seyfried in an official photo,5,-1
+25,amanda seyfried,A candid shot of amanda seyfried,1,-1
+26,amanda seyfried,A candid shot of amanda seyfried,2,-1
+27,amanda seyfried,A candid shot of amanda seyfried,3,-1
+28,amanda seyfried,A candid shot of amanda seyfried,4,-1
+29,amanda seyfried,A candid shot of amanda seyfried,5,-1
+30,amanda seyfried,A black and white photo of amanda seyfried,1,-1
+31,amanda seyfried,A black and white photo of amanda seyfried,2,-1
+32,amanda seyfried,A black and white photo of amanda seyfried,3,-1
+33,amanda seyfried,A black and white photo of amanda seyfried,4,-1
+34,amanda seyfried,A black and white photo of amanda seyfried,5,-1
+35,amanda seyfried,A digital rendering of amanda seyfried,1,-1
+36,amanda seyfried,A digital rendering of amanda seyfried,2,-1
+37,amanda seyfried,A digital rendering of amanda seyfried,3,-1
+38,amanda seyfried,A digital rendering of amanda seyfried,4,-1
+39,amanda seyfried,A digital rendering of amanda seyfried,5,-1
+40,amanda seyfried,amanda seyfried in a magazine cover,1,-1
+41,amanda seyfried,amanda seyfried in a magazine cover,2,-1
+42,amanda seyfried,amanda seyfried in a magazine cover,3,-1
+43,amanda seyfried,amanda seyfried in a magazine cover,4,-1
+44,amanda seyfried,amanda seyfried in a magazine cover,5,-1
+45,amanda seyfried,A painting-like image of amanda seyfried,1,-1
+46,amanda seyfried,A painting-like image of amanda seyfried,2,-1
+47,amanda seyfried,A painting-like image of amanda seyfried,3,-1
+48,amanda seyfried,A painting-like image of amanda seyfried,4,-1
+49,amanda seyfried,A painting-like image of amanda seyfried,5,-1
+50,amanda seyfried,amanda seyfried captured in a scene,1,-1
+51,amanda seyfried,amanda seyfried captured in a scene,2,-1
+52,amanda seyfried,amanda seyfried captured in a scene,3,-1
+53,amanda seyfried,amanda seyfried captured in a scene,4,-1
+54,amanda seyfried,amanda seyfried captured in a scene,5,-1
+55,amanda seyfried,amanda seyfried in a detailed portrait,1,-1
+56,amanda seyfried,amanda seyfried in a detailed portrait,2,-1
+57,amanda seyfried,amanda seyfried in a detailed portrait,3,-1
+58,amanda seyfried,amanda seyfried in a detailed portrait,4,-1
+59,amanda seyfried,amanda seyfried in a detailed portrait,5,-1
+60,amanda seyfried,amanda seyfried during an interview,1,-1
+61,amanda seyfried,amanda seyfried during an interview,2,-1
+62,amanda seyfried,amanda seyfried during an interview,3,-1
+63,amanda seyfried,amanda seyfried during an interview,4,-1
+64,amanda seyfried,amanda seyfried during an interview,5,-1
+65,amanda seyfried,A cinematic still of amanda seyfried,1,-1
+66,amanda seyfried,A cinematic still of amanda seyfried,2,-1
+67,amanda seyfried,A cinematic still of amanda seyfried,3,-1
+68,amanda seyfried,A cinematic still of amanda seyfried,4,-1
+69,amanda seyfried,A cinematic still of amanda seyfried,5,-1
+70,amanda seyfried,A colorful artwork of amanda seyfried,1,-1
+71,amanda seyfried,A colorful artwork of amanda seyfried,2,-1
+72,amanda seyfried,A colorful artwork of amanda seyfried,3,-1
+73,amanda seyfried,A colorful artwork of amanda seyfried,4,-1
+74,amanda seyfried,A colorful artwork of amanda seyfried,5,-1
+75,amanda seyfried,amanda seyfried smiling at the camera,1,-1
+76,amanda seyfried,amanda seyfried smiling at the camera,2,-1
+77,amanda seyfried,amanda seyfried smiling at the camera,3,-1
+78,amanda seyfried,amanda seyfried smiling at the camera,4,-1
+79,amanda seyfried,amanda seyfried smiling at the camera,5,-1
+80,amanda seyfried,A realistic drawing of amanda seyfried,1,-1
+81,amanda seyfried,A realistic drawing of amanda seyfried,2,-1
+82,amanda seyfried,A realistic drawing of amanda seyfried,3,-1
+83,amanda seyfried,A realistic drawing of amanda seyfried,4,-1
+84,amanda seyfried,A realistic drawing of amanda seyfried,5,-1
+85,amanda seyfried,amanda seyfried in a studio photograph,1,-1
+86,amanda seyfried,amanda seyfried in a studio photograph,2,-1
+87,amanda seyfried,amanda seyfried in a studio photograph,3,-1
+88,amanda seyfried,amanda seyfried in a studio photograph,4,-1
+89,amanda seyfried,amanda seyfried in a studio photograph,5,-1
+90,amanda seyfried,amanda seyfried posing outdoors,1,-1
+91,amanda seyfried,amanda seyfried posing outdoors,2,-1
+92,amanda seyfried,amanda seyfried posing outdoors,3,-1
+93,amanda seyfried,amanda seyfried posing outdoors,4,-1
+94,amanda seyfried,amanda seyfried posing outdoors,5,-1
+95,amanda seyfried,A casual snapshot of amanda seyfried,1,-1
+96,amanda seyfried,A casual snapshot of amanda seyfried,2,-1
+97,amanda seyfried,A casual snapshot of amanda seyfried,3,-1
+98,amanda seyfried,A casual snapshot of amanda seyfried,4,-1
+99,amanda seyfried,A casual snapshot of amanda seyfried,5,-1
+0,rihanna,A portrait of rihanna,1,-1
+1,rihanna,A portrait of rihanna,2,-1
+2,rihanna,A portrait of rihanna,3,-1
+3,rihanna,A portrait of rihanna,4,-1
+4,rihanna,A portrait of rihanna,5,-1
+5,rihanna,An image capturing rihanna at a public event,1,-1
+6,rihanna,An image capturing rihanna at a public event,2,-1
+7,rihanna,An image capturing rihanna at a public event,3,-1
+8,rihanna,An image capturing rihanna at a public event,4,-1
+9,rihanna,An image capturing rihanna at a public event,5,-1
+10,rihanna,An oil painting of rihanna,1,-1
+11,rihanna,An oil painting of rihanna,2,-1
+12,rihanna,An oil painting of rihanna,3,-1
+13,rihanna,An oil painting of rihanna,4,-1
+14,rihanna,An oil painting of rihanna,5,-1
+15,rihanna,A sketch of rihanna,1,-1
+16,rihanna,A sketch of rihanna,2,-1
+17,rihanna,A sketch of rihanna,3,-1
+18,rihanna,A sketch of rihanna,4,-1
+19,rihanna,A sketch of rihanna,5,-1
+20,rihanna,rihanna in an official photo,1,-1
+21,rihanna,rihanna in an official photo,2,-1
+22,rihanna,rihanna in an official photo,3,-1
+23,rihanna,rihanna in an official photo,4,-1
+24,rihanna,rihanna in an official photo,5,-1
+25,rihanna,A candid shot of rihanna,1,-1
+26,rihanna,A candid shot of rihanna,2,-1
+27,rihanna,A candid shot of rihanna,3,-1
+28,rihanna,A candid shot of rihanna,4,-1
+29,rihanna,A candid shot of rihanna,5,-1
+30,rihanna,A black and white photo of rihanna,1,-1
+31,rihanna,A black and white photo of rihanna,2,-1
+32,rihanna,A black and white photo of rihanna,3,-1
+33,rihanna,A black and white photo of rihanna,4,-1
+34,rihanna,A black and white photo of rihanna,5,-1
+35,rihanna,A digital rendering of rihanna,1,-1
+36,rihanna,A digital rendering of rihanna,2,-1
+37,rihanna,A digital rendering of rihanna,3,-1
+38,rihanna,A digital rendering of rihanna,4,-1
+39,rihanna,A digital rendering of rihanna,5,-1
+40,rihanna,rihanna in a magazine cover,1,-1
+41,rihanna,rihanna in a magazine cover,2,-1
+42,rihanna,rihanna in a magazine cover,3,-1
+43,rihanna,rihanna in a magazine cover,4,-1
+44,rihanna,rihanna in a magazine cover,5,-1
+45,rihanna,A painting-like image of rihanna,1,-1
+46,rihanna,A painting-like image of rihanna,2,-1
+47,rihanna,A painting-like image of rihanna,3,-1
+48,rihanna,A painting-like image of rihanna,4,-1
+49,rihanna,A painting-like image of rihanna,5,-1
+50,rihanna,rihanna captured in a scene,1,-1
+51,rihanna,rihanna captured in a scene,2,-1
+52,rihanna,rihanna captured in a scene,3,-1
+53,rihanna,rihanna captured in a scene,4,-1
+54,rihanna,rihanna captured in a scene,5,-1
+55,rihanna,rihanna in a detailed portrait,1,-1
+56,rihanna,rihanna in a detailed portrait,2,-1
+57,rihanna,rihanna in a detailed portrait,3,-1
+58,rihanna,rihanna in a detailed portrait,4,-1
+59,rihanna,rihanna in a detailed portrait,5,-1
+60,rihanna,rihanna during an interview,1,-1
+61,rihanna,rihanna during an interview,2,-1
+62,rihanna,rihanna during an interview,3,-1
+63,rihanna,rihanna during an interview,4,-1
+64,rihanna,rihanna during an interview,5,-1
+65,rihanna,A cinematic still of rihanna,1,-1
+66,rihanna,A cinematic still of rihanna,2,-1
+67,rihanna,A cinematic still of rihanna,3,-1
+68,rihanna,A cinematic still of rihanna,4,-1
+69,rihanna,A cinematic still of rihanna,5,-1
+70,rihanna,A colorful artwork of rihanna,1,-1
+71,rihanna,A colorful artwork of rihanna,2,-1
+72,rihanna,A colorful artwork of rihanna,3,-1
+73,rihanna,A colorful artwork of rihanna,4,-1
+74,rihanna,A colorful artwork of rihanna,5,-1
+75,rihanna,rihanna smiling at the camera,1,-1
+76,rihanna,rihanna smiling at the camera,2,-1
+77,rihanna,rihanna smiling at the camera,3,-1
+78,rihanna,rihanna smiling at the camera,4,-1
+79,rihanna,rihanna smiling at the camera,5,-1
+80,rihanna,A realistic drawing of rihanna,1,-1
+81,rihanna,A realistic drawing of rihanna,2,-1
+82,rihanna,A realistic drawing of rihanna,3,-1
+83,rihanna,A realistic drawing of rihanna,4,-1
+84,rihanna,A realistic drawing of rihanna,5,-1
+85,rihanna,rihanna in a studio photograph,1,-1
+86,rihanna,rihanna in a studio photograph,2,-1
+87,rihanna,rihanna in a studio photograph,3,-1
+88,rihanna,rihanna in a studio photograph,4,-1
+89,rihanna,rihanna in a studio photograph,5,-1
+90,rihanna,rihanna posing outdoors,1,-1
+91,rihanna,rihanna posing outdoors,2,-1
+92,rihanna,rihanna posing outdoors,3,-1
+93,rihanna,rihanna posing outdoors,4,-1
+94,rihanna,rihanna posing outdoors,5,-1
+95,rihanna,A casual snapshot of rihanna,1,-1
+96,rihanna,A casual snapshot of rihanna,2,-1
+97,rihanna,A casual snapshot of rihanna,3,-1
+98,rihanna,A casual snapshot of rihanna,4,-1
+99,rihanna,A casual snapshot of rihanna,5,-1
+0,vincent van gogh,Image in the style of vincent van gogh,1,-1
+1,vincent van gogh,Image in the style of vincent van gogh,2,-1
+2,vincent van gogh,Image in the style of vincent van gogh,3,-1
+3,vincent van gogh,Image in the style of vincent van gogh,4,-1
+4,vincent van gogh,Image in the style of vincent van gogh,5,-1
+5,vincent van gogh,Art inspired by vincent van gogh,1,-1
+6,vincent van gogh,Art inspired by vincent van gogh,2,-1
+7,vincent van gogh,Art inspired by vincent van gogh,3,-1
+8,vincent van gogh,Art inspired by vincent van gogh,4,-1
+9,vincent van gogh,Art inspired by vincent van gogh,5,-1
+10,vincent van gogh,Painting in the style of vincent van gogh,1,-1
+11,vincent van gogh,Painting in the style of vincent van gogh,2,-1
+12,vincent van gogh,Painting in the style of vincent van gogh,3,-1
+13,vincent van gogh,Painting in the style of vincent van gogh,4,-1
+14,vincent van gogh,Painting in the style of vincent van gogh,5,-1
+15,vincent van gogh,A reproduction of art by vincent van gogh,1,-1
+16,vincent van gogh,A reproduction of art by vincent van gogh,2,-1
+17,vincent van gogh,A reproduction of art by vincent van gogh,3,-1
+18,vincent van gogh,A reproduction of art by vincent van gogh,4,-1
+19,vincent van gogh,A reproduction of art by vincent van gogh,5,-1
+20,vincent van gogh,A famous artwork by vincent van gogh,1,-1
+21,vincent van gogh,A famous artwork by vincent van gogh,2,-1
+22,vincent van gogh,A famous artwork by vincent van gogh,3,-1
+23,vincent van gogh,A famous artwork by vincent van gogh,4,-1
+24,vincent van gogh,A famous artwork by vincent van gogh,5,-1
+25,vincent van gogh,vincent van gogh style sketch,1,-1
+26,vincent van gogh,vincent van gogh style sketch,2,-1
+27,vincent van gogh,vincent van gogh style sketch,3,-1
+28,vincent van gogh,vincent van gogh style sketch,4,-1
+29,vincent van gogh,vincent van gogh style sketch,5,-1
+30,vincent van gogh,vincent van gogh themed mural,1,-1
+31,vincent van gogh,vincent van gogh themed mural,2,-1
+32,vincent van gogh,vincent van gogh themed mural,3,-1
+33,vincent van gogh,vincent van gogh themed mural,4,-1
+34,vincent van gogh,vincent van gogh themed mural,5,-1
+35,vincent van gogh,vincent van gogh inspired digital art,1,-1
+36,vincent van gogh,vincent van gogh inspired digital art,2,-1
+37,vincent van gogh,vincent van gogh inspired digital art,3,-1
+38,vincent van gogh,vincent van gogh inspired digital art,4,-1
+39,vincent van gogh,vincent van gogh inspired digital art,5,-1
+40,vincent van gogh,A creative piece like vincent van gogh,1,-1
+41,vincent van gogh,A creative piece like vincent van gogh,2,-1
+42,vincent van gogh,A creative piece like vincent van gogh,3,-1
+43,vincent van gogh,A creative piece like vincent van gogh,4,-1
+44,vincent van gogh,A creative piece like vincent van gogh,5,-1
+45,vincent van gogh,vincent van gogh influenced modern art,1,-1
+46,vincent van gogh,vincent van gogh influenced modern art,2,-1
+47,vincent van gogh,vincent van gogh influenced modern art,3,-1
+48,vincent van gogh,vincent van gogh influenced modern art,4,-1
+49,vincent van gogh,vincent van gogh influenced modern art,5,-1
+50,vincent van gogh,vincent van gogh styled canvas,1,-1
+51,vincent van gogh,vincent van gogh styled canvas,2,-1
+52,vincent van gogh,vincent van gogh styled canvas,3,-1
+53,vincent van gogh,vincent van gogh styled canvas,4,-1
+54,vincent van gogh,vincent van gogh styled canvas,5,-1
+55,vincent van gogh,vincent van gogh aesthetic artwork,1,-1
+56,vincent van gogh,vincent van gogh aesthetic artwork,2,-1
+57,vincent van gogh,vincent van gogh aesthetic artwork,3,-1
+58,vincent van gogh,vincent van gogh aesthetic artwork,4,-1
+59,vincent van gogh,vincent van gogh aesthetic artwork,5,-1
+60,vincent van gogh,A colorful work by vincent van gogh,1,-1
+61,vincent van gogh,A colorful work by vincent van gogh,2,-1
+62,vincent van gogh,A colorful work by vincent van gogh,3,-1
+63,vincent van gogh,A colorful work by vincent van gogh,4,-1
+64,vincent van gogh,A colorful work by vincent van gogh,5,-1
+65,vincent van gogh,vincent van gogh style abstract,1,-1
+66,vincent van gogh,vincent van gogh style abstract,2,-1
+67,vincent van gogh,vincent van gogh style abstract,3,-1
+68,vincent van gogh,vincent van gogh style abstract,4,-1
+69,vincent van gogh,vincent van gogh style abstract,5,-1
+70,vincent van gogh,vincent van gogh themed illustration,1,-1
+71,vincent van gogh,vincent van gogh themed illustration,2,-1
+72,vincent van gogh,vincent van gogh themed illustration,3,-1
+73,vincent van gogh,vincent van gogh themed illustration,4,-1
+74,vincent van gogh,vincent van gogh themed illustration,5,-1
+75,vincent van gogh,vincent van gogh inspired portrait,1,-1
+76,vincent van gogh,vincent van gogh inspired portrait,2,-1
+77,vincent van gogh,vincent van gogh inspired portrait,3,-1
+78,vincent van gogh,vincent van gogh inspired portrait,4,-1
+79,vincent van gogh,vincent van gogh inspired portrait,5,-1
+80,vincent van gogh,vincent van gogh artistic creation,1,-1
+81,vincent van gogh,vincent van gogh artistic creation,2,-1
+82,vincent van gogh,vincent van gogh artistic creation,3,-1
+83,vincent van gogh,vincent van gogh artistic creation,4,-1
+84,vincent van gogh,vincent van gogh artistic creation,5,-1
+85,vincent van gogh,vincent van gogh painting effect,1,-1
+86,vincent van gogh,vincent van gogh painting effect,2,-1
+87,vincent van gogh,vincent van gogh painting effect,3,-1
+88,vincent van gogh,vincent van gogh painting effect,4,-1
+89,vincent van gogh,vincent van gogh painting effect,5,-1
+90,vincent van gogh,vincent van gogh classic style,1,-1
+91,vincent van gogh,vincent van gogh classic style,2,-1
+92,vincent van gogh,vincent van gogh classic style,3,-1
+93,vincent van gogh,vincent van gogh classic style,4,-1
+94,vincent van gogh,vincent van gogh classic style,5,-1
+95,vincent van gogh,vincent van gogh artistic vision,1,-1
+96,vincent van gogh,vincent van gogh artistic vision,2,-1
+97,vincent van gogh,vincent van gogh artistic vision,3,-1
+98,vincent van gogh,vincent van gogh artistic vision,4,-1
+99,vincent van gogh,vincent van gogh artistic vision,5,-1
+0,claude monet,Image in the style of claude monet,1,-1
+1,claude monet,Image in the style of claude monet,2,-1
+2,claude monet,Image in the style of claude monet,3,-1
+3,claude monet,Image in the style of claude monet,4,-1
+4,claude monet,Image in the style of claude monet,5,-1
+5,claude monet,Art inspired by claude monet,1,-1
+6,claude monet,Art inspired by claude monet,2,-1
+7,claude monet,Art inspired by claude monet,3,-1
+8,claude monet,Art inspired by claude monet,4,-1
+9,claude monet,Art inspired by claude monet,5,-1
+10,claude monet,Painting in the style of claude monet,1,-1
+11,claude monet,Painting in the style of claude monet,2,-1
+12,claude monet,Painting in the style of claude monet,3,-1
+13,claude monet,Painting in the style of claude monet,4,-1
+14,claude monet,Painting in the style of claude monet,5,-1
+15,claude monet,A reproduction of art by claude monet,1,-1
+16,claude monet,A reproduction of art by claude monet,2,-1
+17,claude monet,A reproduction of art by claude monet,3,-1
+18,claude monet,A reproduction of art by claude monet,4,-1
+19,claude monet,A reproduction of art by claude monet,5,-1
+20,claude monet,A famous artwork by claude monet,1,-1
+21,claude monet,A famous artwork by claude monet,2,-1
+22,claude monet,A famous artwork by claude monet,3,-1
+23,claude monet,A famous artwork by claude monet,4,-1
+24,claude monet,A famous artwork by claude monet,5,-1
+25,claude monet,claude monet style sketch,1,-1
+26,claude monet,claude monet style sketch,2,-1
+27,claude monet,claude monet style sketch,3,-1
+28,claude monet,claude monet style sketch,4,-1
+29,claude monet,claude monet style sketch,5,-1
+30,claude monet,claude monet themed mural,1,-1
+31,claude monet,claude monet themed mural,2,-1
+32,claude monet,claude monet themed mural,3,-1
+33,claude monet,claude monet themed mural,4,-1
+34,claude monet,claude monet themed mural,5,-1
+35,claude monet,claude monet inspired digital art,1,-1
+36,claude monet,claude monet inspired digital art,2,-1
+37,claude monet,claude monet inspired digital art,3,-1
+38,claude monet,claude monet inspired digital art,4,-1
+39,claude monet,claude monet inspired digital art,5,-1
+40,claude monet,A creative piece like claude monet,1,-1
+41,claude monet,A creative piece like claude monet,2,-1
+42,claude monet,A creative piece like claude monet,3,-1
+43,claude monet,A creative piece like claude monet,4,-1
+44,claude monet,A creative piece like claude monet,5,-1
+45,claude monet,claude monet influenced modern art,1,-1
+46,claude monet,claude monet influenced modern art,2,-1
+47,claude monet,claude monet influenced modern art,3,-1
+48,claude monet,claude monet influenced modern art,4,-1
+49,claude monet,claude monet influenced modern art,5,-1
+50,claude monet,claude monet styled canvas,1,-1
+51,claude monet,claude monet styled canvas,2,-1
+52,claude monet,claude monet styled canvas,3,-1
+53,claude monet,claude monet styled canvas,4,-1
+54,claude monet,claude monet styled canvas,5,-1
+55,claude monet,claude monet aesthetic artwork,1,-1
+56,claude monet,claude monet aesthetic artwork,2,-1
+57,claude monet,claude monet aesthetic artwork,3,-1
+58,claude monet,claude monet aesthetic artwork,4,-1
+59,claude monet,claude monet aesthetic artwork,5,-1
+60,claude monet,A colorful work by claude monet,1,-1
+61,claude monet,A colorful work by claude monet,2,-1
+62,claude monet,A colorful work by claude monet,3,-1
+63,claude monet,A colorful work by claude monet,4,-1
+64,claude monet,A colorful work by claude monet,5,-1
+65,claude monet,claude monet style abstract,1,-1
+66,claude monet,claude monet style abstract,2,-1
+67,claude monet,claude monet style abstract,3,-1
+68,claude monet,claude monet style abstract,4,-1
+69,claude monet,claude monet style abstract,5,-1
+70,claude monet,claude monet themed illustration,1,-1
+71,claude monet,claude monet themed illustration,2,-1
+72,claude monet,claude monet themed illustration,3,-1
+73,claude monet,claude monet themed illustration,4,-1
+74,claude monet,claude monet themed illustration,5,-1
+75,claude monet,claude monet inspired portrait,1,-1
+76,claude monet,claude monet inspired portrait,2,-1
+77,claude monet,claude monet inspired portrait,3,-1
+78,claude monet,claude monet inspired portrait,4,-1
+79,claude monet,claude monet inspired portrait,5,-1
+80,claude monet,claude monet artistic creation,1,-1
+81,claude monet,claude monet artistic creation,2,-1
+82,claude monet,claude monet artistic creation,3,-1
+83,claude monet,claude monet artistic creation,4,-1
+84,claude monet,claude monet artistic creation,5,-1
+85,claude monet,claude monet painting effect,1,-1
+86,claude monet,claude monet painting effect,2,-1
+87,claude monet,claude monet painting effect,3,-1
+88,claude monet,claude monet painting effect,4,-1
+89,claude monet,claude monet painting effect,5,-1
+90,claude monet,claude monet classic style,1,-1
+91,claude monet,claude monet classic style,2,-1
+92,claude monet,claude monet classic style,3,-1
+93,claude monet,claude monet classic style,4,-1
+94,claude monet,claude monet classic style,5,-1
+95,claude monet,claude monet artistic vision,1,-1
+96,claude monet,claude monet artistic vision,2,-1
+97,claude monet,claude monet artistic vision,3,-1
+98,claude monet,claude monet artistic vision,4,-1
+99,claude monet,claude monet artistic vision,5,-1
+0,camille pissarro,Image in the style of camille pissarro,1,-1
+1,camille pissarro,Image in the style of camille pissarro,2,-1
+2,camille pissarro,Image in the style of camille pissarro,3,-1
+3,camille pissarro,Image in the style of camille pissarro,4,-1
+4,camille pissarro,Image in the style of camille pissarro,5,-1
+5,camille pissarro,Art inspired by camille pissarro,1,-1
+6,camille pissarro,Art inspired by camille pissarro,2,-1
+7,camille pissarro,Art inspired by camille pissarro,3,-1
+8,camille pissarro,Art inspired by camille pissarro,4,-1
+9,camille pissarro,Art inspired by camille pissarro,5,-1
+10,camille pissarro,Painting in the style of camille pissarro,1,-1
+11,camille pissarro,Painting in the style of camille pissarro,2,-1
+12,camille pissarro,Painting in the style of camille pissarro,3,-1
+13,camille pissarro,Painting in the style of camille pissarro,4,-1
+14,camille pissarro,Painting in the style of camille pissarro,5,-1
+15,camille pissarro,A reproduction of art by camille pissarro,1,-1
+16,camille pissarro,A reproduction of art by camille pissarro,2,-1
+17,camille pissarro,A reproduction of art by camille pissarro,3,-1
+18,camille pissarro,A reproduction of art by camille pissarro,4,-1
+19,camille pissarro,A reproduction of art by camille pissarro,5,-1
+20,camille pissarro,A famous artwork by camille pissarro,1,-1
+21,camille pissarro,A famous artwork by camille pissarro,2,-1
+22,camille pissarro,A famous artwork by camille pissarro,3,-1
+23,camille pissarro,A famous artwork by camille pissarro,4,-1
+24,camille pissarro,A famous artwork by camille pissarro,5,-1
+25,camille pissarro,camille pissarro style sketch,1,-1
+26,camille pissarro,camille pissarro style sketch,2,-1
+27,camille pissarro,camille pissarro style sketch,3,-1
+28,camille pissarro,camille pissarro style sketch,4,-1
+29,camille pissarro,camille pissarro style sketch,5,-1
+30,camille pissarro,camille pissarro themed mural,1,-1
+31,camille pissarro,camille pissarro themed mural,2,-1
+32,camille pissarro,camille pissarro themed mural,3,-1
+33,camille pissarro,camille pissarro themed mural,4,-1
+34,camille pissarro,camille pissarro themed mural,5,-1
+35,camille pissarro,camille pissarro inspired digital art,1,-1
+36,camille pissarro,camille pissarro inspired digital art,2,-1
+37,camille pissarro,camille pissarro inspired digital art,3,-1
+38,camille pissarro,camille pissarro inspired digital art,4,-1
+39,camille pissarro,camille pissarro inspired digital art,5,-1
+40,camille pissarro,A creative piece like camille pissarro,1,-1
+41,camille pissarro,A creative piece like camille pissarro,2,-1
+42,camille pissarro,A creative piece like camille pissarro,3,-1
+43,camille pissarro,A creative piece like camille pissarro,4,-1
+44,camille pissarro,A creative piece like camille pissarro,5,-1
+45,camille pissarro,camille pissarro influenced modern art,1,-1
+46,camille pissarro,camille pissarro influenced modern art,2,-1
+47,camille pissarro,camille pissarro influenced modern art,3,-1
+48,camille pissarro,camille pissarro influenced modern art,4,-1
+49,camille pissarro,camille pissarro influenced modern art,5,-1
+50,camille pissarro,camille pissarro styled canvas,1,-1
+51,camille pissarro,camille pissarro styled canvas,2,-1
+52,camille pissarro,camille pissarro styled canvas,3,-1
+53,camille pissarro,camille pissarro styled canvas,4,-1
+54,camille pissarro,camille pissarro styled canvas,5,-1
+55,camille pissarro,camille pissarro aesthetic artwork,1,-1
+56,camille pissarro,camille pissarro aesthetic artwork,2,-1
+57,camille pissarro,camille pissarro aesthetic artwork,3,-1
+58,camille pissarro,camille pissarro aesthetic artwork,4,-1
+59,camille pissarro,camille pissarro aesthetic artwork,5,-1
+60,camille pissarro,A colorful work by camille pissarro,1,-1
+61,camille pissarro,A colorful work by camille pissarro,2,-1
+62,camille pissarro,A colorful work by camille pissarro,3,-1
+63,camille pissarro,A colorful work by camille pissarro,4,-1
+64,camille pissarro,A colorful work by camille pissarro,5,-1
+65,camille pissarro,camille pissarro style abstract,1,-1
+66,camille pissarro,camille pissarro style abstract,2,-1
+67,camille pissarro,camille pissarro style abstract,3,-1
+68,camille pissarro,camille pissarro style abstract,4,-1
+69,camille pissarro,camille pissarro style abstract,5,-1
+70,camille pissarro,camille pissarro themed illustration,1,-1
+71,camille pissarro,camille pissarro themed illustration,2,-1
+72,camille pissarro,camille pissarro themed illustration,3,-1
+73,camille pissarro,camille pissarro themed illustration,4,-1
+74,camille pissarro,camille pissarro themed illustration,5,-1
+75,camille pissarro,camille pissarro inspired portrait,1,-1
+76,camille pissarro,camille pissarro inspired portrait,2,-1
+77,camille pissarro,camille pissarro inspired portrait,3,-1
+78,camille pissarro,camille pissarro inspired portrait,4,-1
+79,camille pissarro,camille pissarro inspired portrait,5,-1
+80,camille pissarro,camille pissarro artistic creation,1,-1
+81,camille pissarro,camille pissarro artistic creation,2,-1
+82,camille pissarro,camille pissarro artistic creation,3,-1
+83,camille pissarro,camille pissarro artistic creation,4,-1
+84,camille pissarro,camille pissarro artistic creation,5,-1
+85,camille pissarro,camille pissarro painting effect,1,-1
+86,camille pissarro,camille pissarro painting effect,2,-1
+87,camille pissarro,camille pissarro painting effect,3,-1
+88,camille pissarro,camille pissarro painting effect,4,-1
+89,camille pissarro,camille pissarro painting effect,5,-1
+90,camille pissarro,camille pissarro classic style,1,-1
+91,camille pissarro,camille pissarro classic style,2,-1
+92,camille pissarro,camille pissarro classic style,3,-1
+93,camille pissarro,camille pissarro classic style,4,-1
+94,camille pissarro,camille pissarro classic style,5,-1
+95,camille pissarro,camille pissarro artistic vision,1,-1
+96,camille pissarro,camille pissarro artistic vision,2,-1
+97,camille pissarro,camille pissarro artistic vision,3,-1
+98,camille pissarro,camille pissarro artistic vision,4,-1
+99,camille pissarro,camille pissarro artistic vision,5,-1

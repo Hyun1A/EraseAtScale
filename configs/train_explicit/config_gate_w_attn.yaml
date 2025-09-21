@@ -1,0 +1,39 @@
+logging:
+  generate_num: 1
+  interval: 1800
+  project_name: eas_sd1.4_explicit
+  run_name: erase
+  use_wandb: true
+  verbose: false
+network:
+  alpha: 1.0
+  num_embeddings: 77
+  continual_rank: 4
+  hidden_size: 4
+  init_size: 4
+  rank: 4
+other:
+  use_xformers: true
+pretrained_model:
+  clip_skip: 1
+  name_or_path: CompVis/stable-diffusion-v1-4
+  safetensor: []
+  v2: false
+  v_pred: false
+prompts_file: configs/train_explicit/prompt_target.csv
+replace_word: explicit_concept
+save:
+  name: singleton_onebyone_person
+  path: "output/Singleton_Explicit/explicit/gate_guide#_pal#_gate_rank#_conf0.95_w_attn_batch256_iter1800/#EXPLICIT_CONCEPT"
+  precision: float32
+train:
+  batch_size: 1
+  iterations: 1800
+  lr: 0.003
+  lr_scheduler: cosine_with_restarts
+  lr_scheduler_num_cycles: 1
+  lr_warmup_steps: 5
+  max_denoising_steps: 50
+  noise_scheduler: ddim
+  optimizer_type: AdamW8bit
+  train_seed: 2024
