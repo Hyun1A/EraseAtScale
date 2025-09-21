@@ -1,0 +1,18 @@
+# requested
+.cache/
+generated_images/
+dataset/
+output/
+pm_cache/
+wandb/
+
+# optional but recommended
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+.ipynb_checkpoints/
+.DS_Store
+.env
+.venv/
