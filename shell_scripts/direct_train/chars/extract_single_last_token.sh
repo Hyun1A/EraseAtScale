@@ -27,7 +27,7 @@ for GATE_RANK in "${GATE_RANK_LIST[@]}"; do
             --batch_size 8 \
             --arch_type ${ARCH_TYPE} \
             --conf 0.9 \
-            --mapping_type "dissimilar" \
+            --mapping_type "similar" \
             --n_top 3
     done
 done

@@ -27,6 +27,7 @@ def train_erase_one_stage(
         tokenizer,
         text_encoder,
         network,
+        network_teacher,
         network_modules,
         unet_modules,
         optimizer,
@@ -39,6 +40,7 @@ def train_erase_one_stage(
         amp_dtype=None,
         amp_enabled=False,
         scaler=None,
+        noise_dict=None,
     ):
 
     embedding_unconditional = train_util.encode_prompts(tokenizer, text_encoder, [""])
@@ -104,10 +106,22 @@ def train_erase_one_stage(
                     continue
 
                 with torch.no_grad():
-                    crsattn_org = unet_modules[name](cat_inputs)
-                    crsattn_target_org = crsattn_org[n_pairs:][:n_pairs]
-                    crsattn_neutral_org = crsattn_org[n_pairs:][n_pairs:2*n_pairs]
-                    crsattn_comp_org = torch.cat([crsattn_org[:n_pairs], crsattn_org[n_pairs:][2*n_pairs:]], dim=0)
+                    if noise_dict is not None:
+                        with network_teacher.editing():
+                            crsattn_org = unet_modules[name](cat_inputs)
+                            crsattn_target_org = crsattn_org[n_pairs:][:n_pairs]
+                            crsattn_neutral_org = crsattn_org[n_pairs:][n_pairs:2*n_pairs]
+                            crsattn_comp_org = torch.cat([crsattn_org[:n_pairs], crsattn_org[n_pairs:][2*n_pairs:]], dim=0)
+
+                        weight = unet_modules[name].weight.data
+                        weight_noise = noise_dict[name]
+                        unet_modules[name].weight.data = (weight + weight_noise).clone()
+
+                    else:
+                        crsattn_org = unet_modules[name](cat_inputs)
+                        crsattn_target_org = crsattn_org[n_pairs:][:n_pairs]
+                        crsattn_neutral_org = crsattn_org[n_pairs:][n_pairs:2*n_pairs]
+                        crsattn_comp_org = torch.cat([crsattn_org[:n_pairs], crsattn_org[n_pairs:][2*n_pairs:]], dim=0)
 
                 # with torch.autograd.profiler.profile(use_cuda=True) as prof:
                 with network.editing():
@@ -197,6 +211,12 @@ def train_erase_one_stage(
             loss_total.backward()
             optimizer.step()
             lr_scheduler.step()
+
+        if noise_dict is not None:
+            for key, val in unet_modules.items():
+                weight = val.weight.data
+                weight_noise = noise_dict[key]
+                unet_modules[key].weight.data = (weight - weight_noise).clone()
 
         ######################## optim ##########################        
         #########################################################

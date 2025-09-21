@@ -23,7 +23,7 @@ KEEPTOP=0.1
 BATCH="512"
 LR="0.01"
 ITER="16192"
-MAP_TYPE="dissimilar_3"
+MAP_TYPE="similar_3"
 
 for PAL in "${PAL_LIST[@]}"; do
     CUDA_VISIBLE_DEVICES="0" python ./generate/generate_direct_hetero.py --config ${GEN_CONFIG} \

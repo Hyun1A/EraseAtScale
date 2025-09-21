@@ -114,11 +114,10 @@ def build_network_teacher(
     config: RootConfig,
     args: argparse.Namespace,
     weight_dtype: torch.dtype,
-    arch_type = "gate"
 ) -> EASNetwork:
     task_id = len(config.pretrained_model.safetensor)
     
-    arch = pick_arch(arch_type)
+    arch = pick_arch(args.arch_type)
     
 
     concepts_ckpt = []
@@ -162,20 +161,21 @@ def build_network_teacher(
         args=args,
     ).to(DEVICE_CUDA, dtype=weight_dtype)  
 
-    for k,v in net.named_parameters(): 
-        print(f"{k:100}", v.shape, eas_modules[0][k].shape)
-        for idx in range(len(eas_modules)):
-            # try:
-            if len(v.shape) > 1:
-                v.data[idx,:] = eas_modules[idx][k]
-            elif args.arch_type=="gate":
-                v.data[idx] = eas_modules[idx][k]
-            else:
-                v.data = eas_modules[idx][k]
-                    
-        net.to(DEVICE_CUDA, dtype=weight_dtype)  
-
-
+    if args.arch_type == "gate":
+        for k,v in net.named_parameters(): 
+            print(f"{k:100}", v.shape, eas_modules[0][k].shape)
+            for idx in range(len(eas_modules)):
+                # try:
+                if len(v.shape) > 1:
+                    v.data[idx,:] = eas_modules[idx][k]
+                elif args.arch_type=="gate":
+                    v.data[idx] = eas_modules[idx][k]
+                else:
+                    v.data = eas_modules[idx][k]
+    else:                    
+        net.load_state_dict(eas_modules[0])
+    
+    net.to(DEVICE_CUDA, dtype=weight_dtype)  
 
     return net
 
@@ -191,8 +191,10 @@ def load_or_make_noise(
     save_path: Path,
     rand_scale: float,
 ) -> Dict[str, torch.Tensor]:
+    os.makedirs("./output/noise", exist_ok=True)
+
     if noise_type == "row_wise":
-        noise_path = save_path.parent / f"noise_{noise_type}.safetensors"
+        noise_path = Path(f"./output/noise/noise_{noise_type}.safetensors")
         if noise_path.is_file():
             print("loading cached noise ...")
             noise = load_file(str(noise_path))
@@ -211,7 +213,7 @@ def load_or_make_noise(
 
 
     if noise_type == "low_rank_1":
-        noise_path = save_path.parent / f"noise_{noise_type}.safetensors"
+        noise_path = Path(f"./output/noise/noise_{noise_type}.safetensors")
         if noise_path.is_file():
             print("loading cached noise ...")
             noise = load_file(str(noise_path))
@@ -276,7 +278,7 @@ def train_distill(
 
     # Build network
     network = build_network(unet, text_encoder, config, args, weight_dtype)
-    network_teacher = build_network_teacher(unet, text_encoder, config, args, weight_dtype, arch_type="ffn")
+    network_teacher = build_network_teacher(unet, text_encoder, config, args, weight_dtype)
     network_teacher.eval()
     network_teacher.set_inference_mode()
     network_teacher.requires_grad_(False)
@@ -365,11 +367,6 @@ def train_distill(
 
 
 
-
-
-
-
-
     # Save weights
     print("Saving...")
     model_metadata={"prompts": "all", "rank": str(config.network.rank), "alpha": str(config.network.alpha)}
@@ -404,6 +401,9 @@ def update_config_from_args(config: RootConfig, args: argparse.Namespace) -> Non
         config.train.resume_stage = args.resume_stage
     if args.lora_rank != -1:
         config.network.rank = args.lora_rank
+    if args.lr != -1:
+        config.train.lr = args.lr
+
     config.train.skip_learned = args.skip_learned
 
     # Experiment naming
@@ -412,11 +412,17 @@ def update_config_from_args(config: RootConfig, args: argparse.Namespace) -> Non
         config.save.path.split("/")[-2]
         .replace("guide#", f"guide{args.guidance_scale}")
         .replace("pal#", f"pal{config.train.pal}")
-        .replace("gate_rank#", f"gate_rank{config.network.init_size}")
+        .replace("gate_rank#", f"gr{config.network.init_size}")
     )
+    exp_name += f"_d{args.depth}_c{args.conf}"
+    exp_name += f"_r{config.network.rank}"
+    exp_name += f"_map_{args.mapping_type}_{args.n_top}"
 
-    exp_name += f"_depth{args.depth}_last_token_conf{args.conf}"
-    exp_name += f"_rank{config.network.rank}"
+    if "moe" in args.arch_type.lower():
+        exp_name += f"_{args.net_type.lower()}"
+        exp_name += f"_{args.arch_type.lower()}_{args.glu_type}_E{args.n_experts}_k{args.top_k}_keep{args.keeptok}"
+        exp_name += f"_b{args.dataset_n_batch}_lr{config.train.lr}_it{args.iterations}"
+
     exp_name += f"_noise_{args.noise_type}"
 
     config.save.path = "/".join(config.save.path.split("/")[:-2] + [exp_name] + [config.save.path.split("/")[-1]])
@@ -471,11 +477,17 @@ def main(args: argparse.Namespace) -> None:
     # Logging & save path per-target
     os.makedirs(config.save.path, exist_ok=True)
 
-    print(f"Num target={len(prompts)} | pal={config.train.pal}")
+    prompts_available = []
+    for target in prompts:    
+        domain = domain_map[target]
+        if os.path.isfile(f"./dataset/train_pairs/{args.mapping_type}_{args.n_top}/conf{args.conf}/{domain}/{target}.pt"):
+            prompts_available.append(target)
+
+    print(f"Num target available={len(prompts_available)} | pal={config.train.pal}")
 
     seed_everything(config.train.train_seed)
 
-    train_distill(config, args, prompts, tokenizer, text_encoder, unet, noise_scheduler, pipe, domain_map, amp_dtype=amp_dtype)
+    train_distill(config, args, prompts_available, tokenizer, text_encoder, unet, noise_scheduler, pipe, domain_map, amp_dtype=amp_dtype)
 
 
 # -----------------------------------------------------------------------------
@@ -509,8 +521,29 @@ if __name__ == "__main__":
     parser.add_argument("--dataset_seed", type=int, default=42)
     parser.add_argument("--iterations", type=int, default=-1)
     parser.add_argument("--iters_per_target", type=int, default=-1)
-
     parser.add_argument("--model_domains", required=True, nargs="*", help="EAS model to use.")
+
+
+
+    parser.add_argument("--n_experts", type=int, default=1)
+    parser.add_argument("--top_k", type=int, default=2)
+    parser.add_argument("--router_noise_std", type=float, default=0.0)
+    parser.add_argument("--keeptok", type=float, default=0.0)          # 0~1
+    parser.add_argument("--lb_coef", type=float, default=1e-2)
+    parser.add_argument("--cov_coef", type=float, default=1e-3)
+    parser.add_argument("--ffn_norm", type=str, default="rmsnorm")      # layernorm|rmsnorm|scalenorm
+    parser.add_argument("--moe_dropout", type=float, default=0.0)
+    parser.add_argument("--moe_resid_dropout", type=float, default=0.0)
+    parser.add_argument("--prenorm_router", type=str2bool, default=True)
+    parser.add_argument("--moe_aux_coef", type=float, default=1.0)  
+    parser.add_argument("--sparse_compute", type=str2bool, default=True)
+    parser.add_argument("--capacity_factor", type=float, default=1.25)
+    parser.add_argument("--token_drop_policy", type=str, default="bypass")  # bypass|zero
+    parser.add_argument("--glu_type", type=str, default="swi")  # "swi" or "glu"
+    parser.add_argument("--net_type", type=str, default="ca_kv")  
+    parser.add_argument("--lr", type=float, default=-1) 
+    parser.add_argument("--mapping_type", type=str, default="base") 
+    parser.add_argument("--n_top", type=int, default=3)
 
     parser.add_argument("--noise_type", type=str, default="row_wise")
 

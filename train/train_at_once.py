@@ -138,35 +138,132 @@ def build_network(
 
 
 
+def build_network_teacher(
+    unet,
+    text_encoder,
+    config: RootConfig,
+    args: argparse.Namespace,
+    weight_dtype: torch.dtype,
+    arch_type = "gate"
+) -> EASNetwork:
+    task_id = len(config.pretrained_model.safetensor)
+    arch = pick_arch(arch_type)
+    
+    concepts_ckpt = []
+    for domain_path in args.model_domains:
+        concept_path = f"{domain_path}/{args.model_path[0]}"
+
+        concepts_folder = os.listdir(concept_path)    
+        
+        for folder in concepts_folder:
+            if os.path.isfile(os.path.join(concept_path, folder)):
+                continue
+                            
+            for ckpt in os.listdir(os.path.join(concept_path,folder)):
+                if ("last.safetensors" in ckpt):
+                    concepts_ckpt.append(os.path.join(concept_path,folder,ckpt))
+
+    model_paths = [Path(lp) for lp in concepts_ckpt]
+
+    eas_modules, metadatas = zip(*[
+        load_state_dict(model_path, weight_dtype) for model_path in model_paths
+    ])
+
+    # check if EASs are compatible
+    assert all([metadata["rank"] == metadatas[0]["rank"] for metadata in metadatas])
+
+    if arch_type == "gate":
+        net_type_org = args.net_type
+        args.net_type = "ca_kv"
+
+    net = EASNetwork(
+        unet,
+        text_encoder,
+        rank=int(float(metadatas[0]["rank"])),
+        multiplier=1.0,
+        alpha=float(metadatas[0]["alpha"]),
+        module=arch,
+        continual=True,
+        task_id=task_id,
+        continual_rank=config.network.continual_rank,
+        hidden_size=config.network.hidden_size,
+        init_size=config.network.init_size,
+        n_concepts=len(model_paths),
+        args=args,
+    ).to(DEVICE_CUDA, dtype=weight_dtype)  
+
+    if arch_type == "gate":
+        args.net_type = net_type_org
+
+        for k,v in net.named_parameters(): 
+            print(f"{k:100}", v.shape, eas_modules[0][k].shape)
+            for idx in range(len(eas_modules)):
+                if len(v.shape) > 1:
+                    v.data[idx,:] = eas_modules[idx][k]
+                else:
+                    v.data[idx] = eas_modules[idx][k]
+    else:
+        net.load_state_dict(eas_modules[0])
+
+    net.to(DEVICE_CUDA, dtype=weight_dtype)  
+
+    return net
+
+
+
 # -----------------------------------------------------------------------------
 # Noise helpers
 # -----------------------------------------------------------------------------
 
+
 def load_or_make_noise(
+    noise_type,
     unet_modules: Dict[str, torch.nn.Module],
     save_path: Path,
     rand_scale: float,
 ) -> Dict[str, torch.Tensor]:
-    noise_path = save_path.parent / f"{save_path.name}_noise.safetensors"
-    if noise_path.is_file():
-        print("loading cached noise ...")
-        noise = load_file(str(noise_path))
-        return {k: v.to(DEVICE_CUDA) for k, v in noise.items()}
+    os.makedirs("./output/noise", exist_ok=True)
 
-    print("generating noise ...")
-    rank, in_dim = 1, 768
-    w_down = torch.randn(rank, in_dim, device=DEVICE_CUDA)
-    noise_dict: Dict[str, torch.Tensor] = {}
-    for key, mod in unet_modules.items():
-        W = mod.weight.data
-        out_dim, in_dim = W.size()
-        noise = rand_scale * w_down / in_dim
-        noise_dict[key] = W.norm() * noise
-    save_file(noise_dict, str(noise_path), None)
+    if  noise_type == "row_wise":
+        noise_path = Path(f"./output/noise/noise_{noise_type}.safetensors")
+        if noise_path.is_file():
+            print("loading cached noise ...")
+            noise = load_file(str(noise_path))
+            return {k: v.to(DEVICE_CUDA) for k, v in noise.items()}
+
+        print("generating noise ...")
+        rank, in_dim = 1, 768
+        w_down = torch.randn(rank, in_dim, device=DEVICE_CUDA)
+        noise_dict: Dict[str, torch.Tensor] = {}
+        for key, mod in unet_modules.items():
+            W = mod.weight.data
+            out_dim, in_dim = W.size()
+            noise = rand_scale * w_down / in_dim
+            noise_dict[key] = W.norm() * noise
+        save_file(noise_dict, str(noise_path), None)
+
+
+    if noise_type == "low_rank_1":
+        noise_path = Path(f"./output/noise/noise_{noise_type}.safetensors")
+        if noise_path.is_file():
+            print("loading cached noise ...")
+            noise = load_file(str(noise_path))
+            return {k: v.to(DEVICE_CUDA) for k, v in noise.items()}
+
+        print("generating noise ...")
+        rank, in_dim = int(noise_type.split("_")[-1]), 768
+        w_down = torch.randn(rank, in_dim, device=DEVICE_CUDA)
+        noise_dict: Dict[str, torch.Tensor] = {}
+        for key, mod in unet_modules.items():
+            W = mod.weight.data
+            out_dim, in_dim = W.size()
+            w_up = torch.randn(out_dim, rank, device=DEVICE_CUDA)            
+            noise = w_up@w_down
+            noise = rand_scale * noise / (in_dim*out_dim)**0.5
+            noise_dict[key] = W.norm() * noise
+        save_file(noise_dict, str(noise_path), None)
+
     return noise_dict
-
-
-
 
 
 # -----------------------------------------------------------------------------
@@ -203,6 +300,9 @@ def train_direct(
         run_name += f"_b{args.dataset_n_batch}_lr{config.train.lr}_it{args.iterations}"
         run_name += f"_map_{args.mapping_type}_{args.n_top}"
 
+        if args.noise_type != "none":
+            run_name += f"_noise_{args.rand}_{args.noise_type}"
+
         wandb.init(
             project=project_name,
             config=metadata,
@@ -217,13 +317,26 @@ def train_direct(
     # Measurements & mappings
     lipschitz = compute_lipschitz_svals(unet)
     mapped_unet_modules = map_network_to_unet_modules(network, unet)
+    for k,v in lipschitz.items():
+        lipschitz[k] = [dat.to(torch.bfloat16) for dat in v]
 
+    noise_dict = load_or_make_noise(args.noise_type, mapped_unet_modules, save_path, rand_scale=args.rand) \
+                if args.noise_type != "none" else None
 
+    if noise_dict is None:
+        network_teacher = None
+    else:
+        network_teacher = build_network_teacher(unet, text_encoder, config, args, weight_dtype, arch_type=args.arch_type)
+    
     unet.to(torch.bfloat16)
     text_encoder.to(torch.bfloat16)
     network.to(torch.bfloat16)
-    for k,v in lipschitz.items():
-        lipschitz[k] = [dat.to(torch.bfloat16) for dat in v]
+
+    if args.noise_type != "none":
+        network_teacher.eval()
+        network_teacher.set_inference_mode()
+        network_teacher.requires_grad_(False)
+        network_teacher.to(torch.bfloat16)
 
 
     # AMP setup
@@ -285,6 +398,7 @@ def train_direct(
         tokenizer=tokenizer,
         text_encoder=text_encoder,
         network=network,
+        network_teacher=network_teacher,
         network_modules=map_network_to_unet_modules(network, unet),
         unet_modules=map_network_to_unet_modules(network, unet),
         optimizer=optimizer,
@@ -297,6 +411,7 @@ def train_direct(
         amp_dtype=amp_dtype,
         amp_enabled=(amp_dtype is not None),
         scaler=scaler,
+        noise_dict=noise_dict,
     )
 
 
@@ -355,6 +470,9 @@ def update_config_from_args(config: RootConfig, args: argparse.Namespace) -> Non
         exp_name += f"_{args.net_type.lower()}"
         exp_name += f"_{args.arch_type.lower()}_{args.glu_type}_E{args.n_experts}_k{args.top_k}_keep{args.keeptok}"
         exp_name += f"_b{args.dataset_n_batch}_lr{config.train.lr}_it{args.iterations}"
+
+    if args.noise_type != "none":
+        exp_name += f"_noise_{args.rand}_{args.noise_type}"
 
     config.save.path = "/".join(config.save.path.split("/")[:-2] + [exp_name] + [config.save.path.split("/")[-1]])
 
@@ -440,7 +558,6 @@ if __name__ == "__main__":
     parser.add_argument("--lora_rank", type=int, default=-1)
     parser.add_argument("--mixup", type=bool, default=True)
     parser.add_argument("--skip_learned", type=bool, default=False)
-    parser.add_argument("--rand", type=float, default=0.01)
     parser.add_argument("--arch_type", type=str, default="gate")
     parser.add_argument("--depth", type=int, default=2)
     parser.add_argument("--batch_size", type=int, default=1)
@@ -476,6 +593,9 @@ if __name__ == "__main__":
     parser.add_argument("--lr", type=float, default=-1)
     parser.add_argument("--mapping_type", type=str, default="base")
     parser.add_argument("--n_top", type=int, default=3)  
+
+    parser.add_argument("--rand", type=float, default=0.5)
+    parser.add_argument("--noise_type", type=str, default="none")
 
     parser.add_argument(
         "--amp_dtype",

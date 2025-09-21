@@ -40,7 +40,6 @@ TEXT_ENCODER_NAME = "text_encoder"
 
 
 def seed_everything(seed: int):
-
     random.seed(seed)
     os.environ['PYTHONHASHSEED'] = str(seed)
     np.random.seed(seed)
@@ -54,6 +53,30 @@ def seed_everything(seed: int):
 def flush():
     torch.cuda.empty_cache()
     gc.collect()
+
+
+
+def _collect_moe_kwargs_from_args(args: argparse.Namespace) -> dict:
+    return dict(
+        num_experts      = int(getattr(args, "n_experts", 4)),
+        top_k            = int(getattr(args, "top_k", 2)),
+        router_noise_std = float(getattr(args, "router_noise_std", 0.0)),
+        keeptok          = float(getattr(args, "keeptok", 0.0)),
+        lb_coef          = float(getattr(args, "lb_coef", 1e-2)),
+        cov_coef         = float(getattr(args, "cov_coef", 1e-3)),
+        ffn_norm         = str(getattr(args, "ffn_norm", "rmsnorm")),
+        dropout_p        = float(getattr(args, "moe_dropout", 0.0)),
+        resid_dropout_p  = float(getattr(args, "moe_resid_dropout", 0.0)),
+        prenorm_router   = bool(getattr(args, "prenorm_router", True)),
+        use_bias         = getattr(args, "use_bias", None),
+        depth            = getattr(args, "depth", None),
+        sparse_compute   =True,
+        glu_type = str(getattr(args, "glu_type", "swi")),
+    )
+
+
+
+
 
 def infer_with_eas(
         args,
@@ -85,26 +108,6 @@ def infer_with_eas(
     unet.eval()
 
 
-
-    eas_modules, metadatas = zip(*[
-        load_state_dict(model_path, weight_dtype) for model_path in model_paths
-    ])
-        
-    # check if EASs are compatible
-    assert all([metadata["rank"] == metadatas[0]["rank"] for metadata in metadatas])
-
-    # get the erased concept
-    erased_prompts = [md["prompts"].split(",") for md in metadatas]
-    erased_prompts_count = [len(ep) for ep in erased_prompts]
-    print(f"Erased prompts: {erased_prompts}")
-
-    print(metadatas[0])
-
-
-
-
-
-
     if args.arch_type == "gate":
         arch = EASLayer_Gate
     elif args.arch_type == "mlp":
@@ -113,6 +116,19 @@ def infer_with_eas(
         arch = EASLayer_MLP_SwiGLU
     elif args.arch_type == "linear":
         arch = EASLayer_Linear
+    elif args.arch_type == "ffn":
+        arch = EASLayer_FFN
+    elif args.arch_type == "ffn_glu":
+        arch = EASLayer_FFN_GLU
+    elif args.arch_type == "moe_dense":
+        arch = EASLayer_MoE_Dense
+
+    module_kwargs = _collect_moe_kwargs_from_args(args) if args.arch_type.lower() == "moe" else {}
+
+    eas_modules, metadatas = zip(*[
+        load_state_dict(model_path, weight_dtype) for model_path in model_paths
+    ])
+    assert all([metadata["rank"] == metadatas[0]["rank"] for metadata in metadatas])
 
     network = EASNetwork(
         unet,
@@ -121,6 +137,7 @@ def infer_with_eas(
         multiplier=1.0,
         alpha=float(metadatas[0]["alpha"]),
         module=arch,
+        module_kwargs=module_kwargs,
         continual=True,
         task_id=10,
         continual_rank=config.gate_rank, 
@@ -130,16 +147,26 @@ def infer_with_eas(
         args=args,
     ).to(device, dtype=weight_dtype)  
     
-    for k,v in network.named_parameters(): 
-        print(f"{k:100}", v.shape, eas_modules[0][k].shape)
-        for idx in range(len(eas_modules)):
-            if len(v.shape) > 1:
-                v.data[idx,:] = eas_modules[idx][k]
-            else:
-                v.data[idx] = eas_modules[idx][k]
-                
+        
+    if args.arch_type == "gate":
+        for k,v in network.named_parameters(): 
+            print(f"{k:100}", v.shape, eas_modules[0][k].shape)
+            for idx in range(len(eas_modules)):
+                # try:
+                if len(v.shape) > 1:
+                    v.data[idx,:] = eas_modules[idx][k]
+                elif args.arch_type=="gate":
+                    v.data[idx] = eas_modules[idx][k]
+                else:
+                    v.data = eas_modules[idx][k]
+    else:
+        network.load_state_dict(eas_modules[0])
+
     network.to(device, dtype=weight_dtype)  
 
+    # get the erased concept
+    erased_concepts = [md["prompts"].split(",") for md in metadatas]
+    print(f"Erased prompts: {erased_concepts}")
 
     network_modules = dict()
     for name, module in network.named_modules():
@@ -154,22 +181,6 @@ def infer_with_eas(
         for network_name in network_modules.keys():
             if name == network_name:
                 unet_modules[name] = module    
-
-
-
-    # ####################################
-    # ############ add noise #############
-    # path_comps = model_paths[0]._str.split("/")[:-2]+["singleton_onebyone_person_noise.safetensors"]
-    # noise_dict = load_file("/".join(path_comps))
-    # for key, val in noise_dict.items():
-    #     noise_dict[key] = val.to(device, dtype=weight_dtype)
-
-    # for key, val in unet_modules.items():
-    #     weight = val.weight.data
-    #     weight_noise = noise_dict[key]
-    #     unet_modules[key].weight.data = (weight + weight_noise).clone()
-    # ############ add noise #############
-    # ####################################
 
     
     network.eval()
@@ -228,17 +239,23 @@ def infer_with_eas(
             network.reset_cache_attention_gate()
 
 
+
+
 def main(args):
-    concepts_folder = os.listdir(args.model_path[0])    
+
     concepts_ckpt = []
-    
-    for folder in concepts_folder:
-        if os.path.isfile(os.path.join(args.model_path[0], folder)):
-            continue
-                          
-        for ckpt in os.listdir(os.path.join(args.model_path[0],folder)):
-            if ("last.safetensors" in ckpt):
-                concepts_ckpt.append(os.path.join(args.model_path[0],folder,ckpt))
+    for domain_path in args.model_domains:
+        concept_path = f"{domain_path}/{args.model_path[0]}"
+
+        concepts_folder = os.listdir(concept_path)    
+        
+        for folder in concepts_folder:
+            if os.path.isfile(os.path.join(concept_path, folder)):
+                continue
+                            
+            for ckpt in os.listdir(os.path.join(concept_path,folder)):
+                if ("last.safetensors" in ckpt):
+                    concepts_ckpt.append(os.path.join(concept_path,folder,ckpt))
 
     model_path = [Path(lp) for lp in concepts_ckpt]
     
@@ -262,7 +279,6 @@ def main(args):
         v2=args.v2,
         precision=args.precision,
     )
-
 
 
 
@@ -292,6 +308,14 @@ if __name__ == "__main__":
         nargs="*",
         help="EAS model to use.",
     )
+
+    parser.add_argument(
+        "--model_domains",
+        required=True,
+        nargs="*",
+        help="EAS model to use.",
+    )
+
     # model configs
     parser.add_argument(
         "--base_model",
@@ -357,7 +381,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--activation",
         type=str,
-        default="relu",
+        default="none",
     )
 
     
@@ -366,6 +390,30 @@ if __name__ == "__main__":
         type=int,
         default=2,
     )
+
+    parser.add_argument(
+        "--concept",
+        type=str,
+        default="none",
+    )
+
+
+    parser.add_argument("--n_experts", type=int, default=1)
+    parser.add_argument("--top_k", type=int, default=2)
+    parser.add_argument("--router_noise_std", type=float, default=0.0)
+    parser.add_argument("--keeptok", type=float, default=0.0)          # 0~1
+    parser.add_argument("--lb_coef", type=float, default=1e-2)
+    parser.add_argument("--cov_coef", type=float, default=1e-3)
+    parser.add_argument("--ffn_norm", type=str, default="rmsnorm")      # layernorm|rmsnorm|scalenorm
+    parser.add_argument("--moe_dropout", type=float, default=0.0)
+    parser.add_argument("--moe_resid_dropout", type=float, default=0.0)
+    parser.add_argument("--prenorm_router", type=str2bool, default=True)
+    parser.add_argument("--moe_aux_coef", type=float, default=1.0)  
+    parser.add_argument("--sparse_compute", type=str2bool, default=True)
+    parser.add_argument("--capacity_factor", type=float, default=1.25)
+    parser.add_argument("--token_drop_policy", type=str, default="bypass")  # bypass|zero
+    parser.add_argument("--glu_type", type=str, default="swi")  # "swi" or "glu"
+    parser.add_argument("--net_type", type=str, default="ca_kv")  # "swi" or "glu"
 
 
     args = parser.parse_args()

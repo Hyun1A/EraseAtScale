@@ -265,7 +265,7 @@ def update_config_from_args(config: RootConfig, args: argparse.Namespace) -> Non
         .replace("pal#", f"pal{config.train.pal}")
         .replace("gate_rank#", f"gr{config.network.init_size}")
     )
-    exp_name += f"_d{args.depth}_c{args.conf}"
+    exp_name += f"_c{args.conf}"
     exp_name += f"_r{config.network.rank}"
     exp_name += f"_map_{args.mapping_type}_{args.n_top}"
 
@@ -344,7 +344,7 @@ if __name__ == "__main__":
     parser.add_argument("--skip_learned", type=bool, default=False)
     parser.add_argument("--rand", type=float, default=0.01)
     parser.add_argument("--arch_type", type=str, default="gate")
-    parser.add_argument("--depth", type=int, default=2)
+    parser.add_argument("--depth", type=int, default=1)
     parser.add_argument("--batch_size", type=int, default=1)
     parser.add_argument("--lr", type=float, default=-1) 
     parser.add_argument("--conf", type=float, default=0.9)

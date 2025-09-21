@@ -113,7 +113,6 @@ def infer_with_eas(
         load_state_dict(model_path, weight_dtype) for model_path in model_paths
     ])
     
-    # breakpoint()
 
     # check if EASs are compatible
     assert all([metadata["rank"] == metadatas[0]["rank"] for metadata in metadatas])
@@ -191,18 +190,19 @@ def infer_with_eas(
                 unet_modules[name] = module    
 
 
-
     ####################################
     ############ add noise #############
-    path_comps = model_paths[0]._str.split("/")[:-2]+["noise_low_rank_1.safetensors"]
-    noise_dict = load_file("/".join(path_comps))
+    noise_dict = load_file(args.noise_path)
     for key, val in noise_dict.items():
         noise_dict[key] = val.to(device, dtype=weight_dtype)
 
-    for key, val in unet_modules.items():
-        weight = val.weight.data
-        weight_noise = noise_dict[key]
-        unet_modules[key].weight.data = (weight + weight_noise).clone()
+    for key, module in unet.named_modules():
+        name = "_".join(key.split("."))
+        name = "lora_unet_" + name
+
+        if name in noise_dict.keys():
+            weight = module.weight.data
+            module.weight.data = (weight + noise_dict[name]).clone()
     ############ add noise #############
     ####################################
 
