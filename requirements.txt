@@ -30,3 +30,4 @@ clean-fid
 lightning
 nudenet==3.0.8
 git+https://github.com/openai/CLIP.git
+PyWavelets
