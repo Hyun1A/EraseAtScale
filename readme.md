@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## Installation
 
 **OS**: Ubuntu 18.04.5 LTS
