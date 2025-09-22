@@ -29,4 +29,3 @@ nudenet==3.0.8
 git+https://github.com/openai/CLIP.git
 PyWavelets
 huggingface-hub==0.25
-git+https://github.com/openai/CLIP.git
