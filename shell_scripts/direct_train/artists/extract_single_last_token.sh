@@ -3,7 +3,7 @@ export CUDA_DEVICE_ORDER=PCI_BUS_ID
 
 CONFIG="./configs/train_artist/config_gate.yaml"
 GUIDE="0.0"
-ST_IDX="10"
+ST_IDX="0"
 END_IDX="700"
 NOISE="0.001"
 ARCH_TYPE="gate"
@@ -27,7 +27,8 @@ for GATE_RANK in "${GATE_RANK_LIST[@]}"; do
             --batch_size 8 \
             --arch_type ${ARCH_TYPE} \
             --conf 0.9 \
-            --mapping_type "similar" \
-            --n_top 3
+            --anchor_type tmm_samp \
+            --mapping_type "similar_exclude_top3" \
+            --n_top 5
     done
 done

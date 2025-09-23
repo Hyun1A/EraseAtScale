@@ -1069,6 +1069,9 @@ class EASLayer_FFN_GLU(nn.Module):
 
 
 
+
+
+
 class EASLayer_MoE_Dense(nn.Module):
     def __init__(
         self,
@@ -1292,7 +1295,6 @@ class EASLayer_MoE_Dense(nn.Module):
         self._last_aux_total = aux
 
         return self.org_forward(x_in) + up * self.multiplier * self.scale
-
 
 
 

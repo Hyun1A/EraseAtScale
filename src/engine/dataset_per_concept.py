@@ -156,10 +156,12 @@ def collect_words(
         top = [filtered_pool[i] for i in idx[0][-n_top:].tolist()]
     elif mode == "dissimilar":
         top = [filtered_pool[i] for i in idx[0][:n_top].tolist()]
-    elif mode == "include_mid":
+    elif mode == "w_mid_samp":
         top = [filtered_pool[i] for i in idx[0][-(n_top-1):].tolist()]
         top += [filtered_pool[i] for i in idx[0][len(idx[0])//2:len(idx[0])//2+1].tolist()]
-        # breakpoint()
+    if mode == "similar_exclude_top3":
+        top = [filtered_pool[i] for i in idx[0][-(n_top+3):-3].tolist()]
+
 
     # sorted_list = [filtered_pool[i] for i in idx[0].tolist()]    
 
@@ -200,69 +202,64 @@ def _build_token_caches(target, tgt_prompts, tokenizer, text_encoder, sim_words,
 
 
 def _build_tmm_models(target, embeds: torch.Tensor, embeds_sim_dict, reduce=True, k=32, replace_word="concept", cache_dir: str = "./pm_cache"):
-    cache_dir = f"{cache_dir}/{replace_word}"
-    os.makedirs(cache_dir, exist_ok=True)
+    
     tgt_fn = Path(cache_dir) / f"target_{target}.pt"
-    if tgt_fn.is_file():
-        tmm_target = torch.load(tgt_fn)
-    else:
-        with autocast(enabled=False):
-            if reduce:
-                embeds, W, mean, var = pca_reduce(embeds, k=32)
-                print(f"Explainable variance: {var}")
-            dof_init = 2
-            
-
-            tmm_target = TMMTorch(
-                n_components=4,
-                covariance_type="diag",
-                tied_covariance=False,
-                shrinkage_alpha=0.0,
-                scale_floor_scale=0.0,
-                min_cluster_weight=0.0,
-                learn_dof=False,
-                dof_init=dof_init,
-                verbose=True,
-                seed=42,
-            ).fit(embeds)
-
+    with autocast(enabled=False):
         if reduce:
-            tmm_target.basis = W
-            tmm_target.mean = mean
-                
-        torch.save(tmm_target, tgt_fn)
+            embeds, W, mean, var = pca_reduce(embeds, k=32)
+            print(f"Explainable variance: {var}")
+        dof_init = 2
+        
+        tmm_target = TMMTorch(
+            n_components=4,
+            covariance_type="diag",
+            tied_covariance=False,
+            shrinkage_alpha=0.0,
+            scale_floor_scale=0.0,
+            min_cluster_weight=0.0,
+            learn_dof=False,
+            dof_init=dof_init,
+            verbose=True,
+            seed=42,
+        ).fit(embeds)
+
+    if reduce:
+        tmm_target.basis = W
+        tmm_target.mean = mean
+            
+    torch.save(tmm_target, tgt_fn)
+
 
     sim_fn = Path(cache_dir) / f"similar_{target}.pt"
-    if sim_fn.is_file():
-        tmm_mapping = torch.load(sim_fn)
-    else:
-        tmm_mapping = {}
-        for w, e in embeds_sim_dict.items():
+    tmm_mapping = {}
+    for w, e in embeds_sim_dict.items():
 
-            if reduce:
-                e, W, mean, var = pca_reduce(e, k=32)
-                print(f"Explainable variance: {var}")
-            dof_init = 2
+        if reduce:
+            e, W, mean, var = pca_reduce(e, k=32)
+            print(f"Explainable variance: {var}")
+        dof_init = 2
 
-            tmm_mapping[w] = TMMTorch(
-                n_components=4,
-                covariance_type="diag",
-                tied_covariance=False,
-                shrinkage_alpha=0.0,
-                scale_floor_scale=0.0,
-                min_cluster_weight=0.0,
-                learn_dof=False,
-                dof_init=dof_init,
-                verbose=True,
-                seed=42,
-            ).fit(e)
+        tmm_mapping[w] = TMMTorch(
+            n_components=4,
+            covariance_type="diag",
+            tied_covariance=False,
+            shrinkage_alpha=0.0,
+            scale_floor_scale=0.0,
+            min_cluster_weight=0.0,
+            learn_dof=False,
+            dof_init=dof_init,
+            verbose=True,
+            seed=42,
+        ).fit(e)
 
-            if reduce:
-                tmm_mapping[w].basis = W
-                tmm_mapping[w].mean = mean
+        if reduce:
+            tmm_mapping[w].basis = W
+            tmm_mapping[w].mean = mean
 
-        torch.save(tmm_mapping, sim_fn)
+    torch.save(tmm_mapping, sim_fn)
+
     return tmm_target, tmm_mapping
+
 
 
 def build_triplet_loader_from_tmms(
@@ -281,12 +278,11 @@ def build_triplet_loader_from_tmms(
     conf_bound=0.9,
     mapping_type="similar",
     n_top=3,
+    anchor_type="mapping",
 ):
     """Given config + sim_words, create (DataLoader, meta) for training.
     Returns: data_loader, (X_target, X_mapping, X_anchor)
     """
-
-    n_top=3
 
     total_token_num = 1 # sum(tokenizer(target).attention_mask)-2
 
@@ -316,10 +312,19 @@ def build_triplet_loader_from_tmms(
         for w in map_words:
             sim_w_prompts.append([t.rstrip("").format(" " + w) for t in templates])
 
-    embeds, embeds_sim = _build_token_caches(target, tgt_prompts, tokenizer, text_encoder, map_words, sim_w_prompts, replace_word)
 
-    cache_dir = f"./pm_cache/{mapping_type}_{n_top}"
-    tmm_target, tmm_mapping = _build_tmm_models(target, embeds, embeds_sim, reduce, k, replace_word, cache_dir)
+    cache_dir = f"./pm_cache/{mapping_type}_{n_top}/{replace_word}"
+    os.makedirs(cache_dir, exist_ok=True)
+    tgt_fn = Path(cache_dir) / f"target_{target}.pt"
+    sim_fn = Path(cache_dir) / f"similar_{target}.pt"
+
+    if (tgt_fn.is_file()) and (sim_fn.is_file()):
+        tmm_target = torch.load(tgt_fn)
+        tmm_mapping = torch.load(sim_fn)
+
+    else: 
+        embeds, embeds_sim = _build_token_caches(target, tgt_prompts, tokenizer, text_encoder, map_words, sim_w_prompts, replace_word)
+        tmm_target, tmm_mapping = _build_tmm_models(target, embeds, embeds_sim, reduce, k, replace_word, cache_dir)
 
 
     # sample within confidence regions
@@ -353,14 +358,51 @@ def build_triplet_loader_from_tmms(
     X_mapping = X_mapping_recon.detach().clone()
     X_mapping = X_mapping.reshape(b, total_token_num, -1)
 
-    X_anchor = X_mapping
+
+
+    ############### anchor samples ################
+    if anchor_type == "mapping":
+        X_anchor = X_mapping
+    elif anchor_type == "tmm_samp":
+        n_con_map = len(tmm_mapping)
+        X_anchor_list = []
+        for idx_map, (con_map, tmm_map) in enumerate(tmm_mapping.items()):
+            if idx_map < n_con_map-1:
+                n_rand_map = n_rand*total_token_num // n_con_map 
+            else:
+                n_rand_map = n_rand*total_token_num - (n_con_map-1)*(n_rand*total_token_num // n_con_map)
+
+            X_anchor_redueced, _ = sample_in_conf_interval(
+                tmm_map,
+                n=n_rand_map,
+                conf_low=conf_low,
+                conf_high=conf_high,
+                n_ref=800_000,
+                helper_batch=65536,
+                max_batches=300,
+                pad_ll=0.0,
+            )
+
+            b, d = X_anchor_redueced.size()
+            b = b // total_token_num
+
+            if reduce:
+                X_anchor_recon = pca_reconstruct(X_anchor_redueced, tmm_map.basis, tmm_map.mean)
+            X_anchor = X_anchor_recon.detach().clone()
+            # breakpoint()
+            X_anchor = X_anchor.reshape(b, total_token_num, -1)
+
+            X_anchor_list.append(X_anchor)
+    
+        X_anchor = torch.cat(X_anchor_list, dim=0)
+
 
     ###### save concept dataset ######
     concept_data_dict = {"concept_tar": target, "concept_anc": map_words, \
                         "target": X_target, "mapping": X_mapping, "anchor": X_anchor}
 
-    os.makedirs(f"./dataset/train_pairs/{mapping_type}_{n_top}/conf{conf_high}/{replace_word}/", exist_ok=True)
-    train_data_path = f"./dataset/train_pairs/{mapping_type}_{n_top}/conf{conf_high}/{replace_word}/{target}.pt"
+    os.makedirs(f"./dataset/train_pairs/anc_{anchor_type}_{mapping_type}_{n_top}/conf{conf_high}/{replace_word}/", exist_ok=True)
+    train_data_path = f"./dataset/train_pairs/anc_{anchor_type}_{mapping_type}_{n_top}/conf{conf_high}/{replace_word}/{target}.pt"
     torch.save(concept_data_dict, train_data_path)
 
 

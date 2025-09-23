@@ -114,7 +114,7 @@ def build_network(
     task_id = len(config.pretrained_model.safetensor)
     arch = pick_arch(args.arch_type)
 
-    module_kwargs = _collect_moe_kwargs_from_args(args) if args.arch_type.lower() == "moe" else {}
+    module_kwargs = _collect_moe_kwargs_from_args(args) if "moe" in args.arch_type.lower() else {}
     
     net = EASNetwork(
         unet,
@@ -176,21 +176,24 @@ def build_network_teacher(
         net_type_org = args.net_type
         args.net_type = "ca_kv"
 
+    module_kwargs = _collect_moe_kwargs_from_args(args) if "moe" in args.arch_type.lower() else {}
+    
     net = EASNetwork(
         unet,
         text_encoder,
-        rank=int(float(metadatas[0]["rank"])),
+        rank=config.network.rank,
         multiplier=1.0,
-        alpha=float(metadatas[0]["alpha"]),
+        alpha=config.network.alpha,
         module=arch,
+        module_kwargs=module_kwargs,
         continual=True,
         task_id=task_id,
         continual_rank=config.network.continual_rank,
         hidden_size=config.network.hidden_size,
         init_size=config.network.init_size,
-        n_concepts=len(model_paths),
         args=args,
-    ).to(DEVICE_CUDA, dtype=weight_dtype)  
+    ).to(DEVICE_CUDA, dtype=weight_dtype)
+
 
     if arch_type == "gate":
         args.net_type = net_type_org
@@ -298,7 +301,7 @@ def train_direct(
         run_name = f"{config.logging.run_name}_{args.net_type}_{args.glu_type}"
         run_name += f"_d{args.depth}_E{args.n_experts}_k{args.top_k}_keep{args.keeptok}"
         run_name += f"_b{args.dataset_n_batch}_lr{config.train.lr}_it{args.iterations}"
-        run_name += f"_map_{args.mapping_type}_{args.n_top}"
+        run_name += f"_anc_{args.anchor_type}_map_{args.mapping_type}_{args.n_top}"
 
         if args.noise_type != "none":
             run_name += f"_noise_{args.rand}_{args.noise_type}"
@@ -347,8 +350,8 @@ def train_direct(
 
     # 2) Loader
     concepts_target = target
-    in_dir = f"./dataset/train_pairs/{args.mapping_type}_{args.n_top}/conf{args.conf}"
-    out_dir = f"./dataset/train_shards/{args.mapping_type}_{args.n_top}/conf{args.conf}"
+    in_dir = f"./dataset/train_pairs/anc_{args.anchor_type}_{args.mapping_type}_{args.n_top}/conf{args.conf}"
+    out_dir = f"./dataset/train_shards/anc_{args.anchor_type}_{args.mapping_type}_{args.n_top}/conf{args.conf}"
 
     shard_paths = build_global_shuffled_shards(
         targets=concepts_target,
@@ -464,7 +467,7 @@ def update_config_from_args(config: RootConfig, args: argparse.Namespace) -> Non
     )
     exp_name += f"_d{args.depth}_c{args.conf}"
     exp_name += f"_r{config.network.rank}"
-    exp_name += f"_map_{args.mapping_type}_{args.n_top}"
+    exp_name += f"_anc_{args.anchor_type}_map_{args.mapping_type}_{args.n_top}"
 
     if "moe" in args.arch_type.lower():
         exp_name += f"_{args.net_type.lower()}"
@@ -532,7 +535,7 @@ def main(args: argparse.Namespace) -> None:
     prompts_available = []
     for target in prompts:    
         domain = domain_map[target]
-        if os.path.isfile(f"./dataset/train_pairs/{args.mapping_type}_{args.n_top}/conf{args.conf}/{domain}/{target}.pt"):
+        if os.path.isfile(f"./dataset/train_pairs/anc_{args.anchor_type}_{args.mapping_type}_{args.n_top}/conf{args.conf}/{domain}/{target}.pt"):
             prompts_available.append(target)
 
     print(f"Num target available={len(prompts_available)} | pal={config.train.pal}")
@@ -591,6 +594,7 @@ if __name__ == "__main__":
     parser.add_argument("--glu_type", type=str, default="swi")
     parser.add_argument("--net_type", type=str, default="ca_kv")
     parser.add_argument("--lr", type=float, default=-1)
+    parser.add_argument("--anchor_type", type=str, default="mapping")
     parser.add_argument("--mapping_type", type=str, default="base")
     parser.add_argument("--n_top", type=int, default=3)  
 

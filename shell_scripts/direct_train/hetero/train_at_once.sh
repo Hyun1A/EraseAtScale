@@ -56,8 +56,9 @@ for RANK in "${RANK_LIST[@]}"; do
                 --moe_aux_coef 1.0 \
                 --model_domains "./output/Singleton_Celeb/celeb_1000" "./output/Singleton_Char/char_400" "./output/Singleton_Arist/artist_700" \
                 --model_path gate_guide1.0_pal30.0_gate_rank16_last_token_conf0.9 \
-                --mapping_type "similar" \
-                --n_top 3 \
+                --anchor_type "tmm_samp" \
+                --mapping_type "w_mid_samp" \
+                --n_top 5
         done
     done
 done

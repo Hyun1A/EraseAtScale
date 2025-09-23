@@ -143,7 +143,7 @@ def update_config_from_args(config: RootConfig, args: argparse.Namespace) -> Non
     )
     exp_name += f"_d{args.depth}_c{args.conf}"
     exp_name += f"_r{config.network.rank}"
-    exp_name += f"_map_{args.mapping_type}_{args.n_top}"
+    exp_name += f"_anc_{args.anchor_type}_map_{args.mapping_type}_{args.n_top}"
 
     if "moe" in args.arch_type.lower():
         exp_name += f"_{args.net_type.lower()}"
@@ -223,6 +223,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int, default=1)
     parser.add_argument("--lr", type=float, default=-1) 
     parser.add_argument("--conf", type=float, default=0.9)
+    parser.add_argument("--anchor_type", type=str, default="mapping")
     parser.add_argument("--mapping_type", type=str, default="similar") 
     parser.add_argument("--n_top", type=int, default=3) 
     parser.add_argument(

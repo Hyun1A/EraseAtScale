@@ -22,14 +22,16 @@ TOPK=1
 KEEPTOP=0.1
 BATCH="512"
 LR="0.01"
-ITER="16192"
-MAP_TYPE="similar_3"
+ITER="50000"
+ANC_TYPE="tmm_samp"
+MAP_TYPE="w_mid_samp_5"
+
 
 for PAL in "${PAL_LIST[@]}"; do
     CUDA_VISIBLE_DEVICES="0" python ./generate/generate_direct_hetero.py --config ${GEN_CONFIG} \
         --model_domains "./output/Singleton_Hetero/hetero_2000" \
-        --model_path direct_guide${GUIDE}_pal${PAL}_gr${GATE_RANK}_d${DEPTH}_c${CONF}_r${RANK}_map_${MAP_TYPE}_${NET_TYPE}_${ARCH_TYPE}_${ACT_TYPE}_E${N_EXP}_k${TOPK}_keep${KEEPTOP}_b${BATCH}_lr${LR}_it${ITER} \
-        --save_env direct_guide${GUIDE}_pal${PAL}_gr${GATE_RANK}_d${DEPTH}_c${CONF}_r${RANK}_map_${MAP_TYPE}_${NET_TYPE}_${ARCH_TYPE}_${ACT_TYPE}_E${N_EXP}_k${TOPK}_keep${KEEPTOP}_b${BATCH}_lr${LR}_it${ITER} \
+        --model_path moe_guide${GUIDE}_pal${PAL}_gr${GATE_RANK}_d${DEPTH}_c${CONF}_r${RANK}_anc_${ANC_TYPE}_map_${MAP_TYPE}_${NET_TYPE}_${ARCH_TYPE}_${ACT_TYPE}_E${N_EXP}_k${TOPK}_keep${KEEPTOP}_b${BATCH}_lr${LR}_it${ITER} \
+        --save_env moe_guide${GUIDE}_pal${PAL}_gr${GATE_RANK}_d${DEPTH}_c${CONF}_r${RANK}_anc_${ANC_TYPE}_map_${MAP_TYPE}_${NET_TYPE}_${ARCH_TYPE}_${ACT_TYPE}_E${N_EXP}_k${TOPK}_keep${KEEPTOP}_b${BATCH}_lr${LR}_it${ITER} \
         --st_prompt_idx ${GEN_ST_IDX} \
         --end_prompt_idx ${GEN_END_IDX} \
         --gate_rank ${GATE_RANK} \

@@ -114,7 +114,7 @@ def build_network(
     task_id = len(config.pretrained_model.safetensor)
     arch = pick_arch(args.arch_type)
 
-    module_kwargs = _collect_moe_kwargs_from_args(args) if args.arch_type.lower() == "moe" else {}
+    module_kwargs = _collect_moe_kwargs_from_args(args) if "moe" in args.arch_type.lower() else {}
     
     net = EASNetwork(
         unet,
