@@ -138,7 +138,7 @@ def infer_with_eas(
         arch = EASLayer_MoE_Dense
 
 
-    module_kwargs = _collect_moe_kwargs_from_args(args) if args.arch_type.lower() == "moe" else {}
+    module_kwargs = _collect_moe_kwargs_from_args(args) if "moe" in args.arch_type.lower() else {}
 
     network = EASNetwork(
         unet,

@@ -43,7 +43,7 @@ for RANK in "${RANK_LIST[@]}"; do
                 --net_type ${NET_TYPE} \
                 --glu_type glu \
                 --n_experts 8 \
-                --top_k 1 \
+                --top_k 2 \
                 --keeptok 0.1 \
                 --router_noise_std 0.1 \
                 --sparse_compute True \
